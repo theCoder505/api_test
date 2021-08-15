@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title> Untitled Document Edits </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+    <style>
+        body {
+            font-family: 'Roboto';
+            font-size: 16px;
+            color: #333;
+        }
+        
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        #allInputs {
+            margin: 0px auto;
+            width: 80%;
+            padding: 25px 40px;
+            background: #ddd;
+            border-radius: 15px;
+            box-shadow: inset 0px 0px 20px #8c8686;
+        }
+        
+        #allInputs input {
+            width: 95%;
+            padding: 7px 15px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0px 0px 4px #464646;
+            font-size: 15px;
+            font-family: robot;
+        }
+        
+        #search {
+            width: 150px;
+            padding: 7px;
+            font-size: 18px;
+            border-radius: 50px;
+            border: none;
+            background: #fff;
+            color: #463e3e;
+            font-weight: 600;
+            box-shadow: 0px 0px 7px black;
+        }
+        
+        h1 {
+            font-size: 20px;
+        }
+        
+        #Jobs {
+            width: 100%;
+            max-width: 900px;
+            margin: 70px auto;
+        }
+        
+        .job {
+            padding: 20px;
+            display: block;
+        }
+        
+        .job:nth-of-type(odd) {
+            background-color: #f5f5f5;
+        }
+        
+        .job:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <br><br><br>
+
+    <div id="allInputs">
+        <br>
+        <input type="text" name="" placeholder="Search By Job Title" id="jobTitle"><br><br>
+        <input type="text" name="" placeholder="Preffered Location" id="jobLocation"><br><br>
+        <input type="text" name="" placeholder="Preffered Salery" id="jobSalary"><br><br>
+        <br>
+        <center> <button id="search">Search</button> </center><br>
+    </div>
+
+    <div id="Jobs"></div>
+
+
+
+
+
+
+
+    <script>
+        jQuery(document).ready(function($) {
+
+            $(document).ready(function() {
+
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: "https://thecoder505.github.io/javascript_api/json.txt",
+                    success: processJSON
+                });
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: "https://thecoder505.github.io/javascript_api/json.json",
+                    success: processJSON
+                });
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: "https://thecoder505.github.io/js_api/api.json",
+                    success: processJSON
+                });
+
+
+
+
+                // ----------------------------------Got all the Api Data now----------------------------------------
+                function processJSON(data) {
+                    $("#search").click(function() {
+
+                        var inputtedTitle = $("#jobTitle").val();
+                        var inputLocation = $("#jobLocation").val();
+                        var inputtedSalary = $("#jobSalary").val();
+
+                        inputtedTitle = inputtedTitle.trim();
+                        inputLocation = inputLocation.trim();
+                        inputtedSalary = inputtedSalary.trim();
+
+                        $.each(data.items, function(i, item) {
+
+                            if (((item.title).includes(inputtedTitle)) && ((item.displayLocation).includes(inputLocation)) && ((item.salary).includes(inputtedSalary))) {
+
+                                $('<div class="job"></div>').html('<h1><a href="' + item.url + '">' + item.title + '</a></h1><p><em>' + item.displayLocation + '</em><br><strong>' + item.salary + '</strong><br><span class="dateDiv" data-time="' + item.liveDate + '">Date Posted: ' + item.liveDate + '</span></p><p>' + item.description + '</p><div class="job-btn"><a href="' + item.url + '" target="_blank">Find out more</a>').prependTo('#Jobs');
+
+                            }
+                        });
+                    });
+                }
+
+
+            });
+        });
+    </script>
+</body>
+
+</html>
